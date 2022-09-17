@@ -19,10 +19,11 @@ class UITOUCH_API ATouchPlayerController : public APlayerController
 
 public:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Aimo|Variable")
-		TObjectPtr <UTouchComponent> TouchComponent = nullptr;
+	ATouchPlayerController();
 
-/**
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Aimo|Variable")
+		TObjectPtr <UTouchComponent> TouchComponent;
+
 protected:
 
 	/** ÷ÿ–¥ ÕÊº“ ‰»Î */

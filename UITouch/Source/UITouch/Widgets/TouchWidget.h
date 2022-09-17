@@ -29,12 +29,21 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Aimo|On")
 		FOnPressed OnPressedLocation;
 
+	/** * 多播所有接收到的调度器 */
+	UPROPERTY(BlueprintReadOnly, Category = "Aimo|On")
+		FTimerHandle BindTouchTimerHandle;
+
 protected:
 	// Called when the game starts
 	virtual void NativeConstruct() override;
 
 
 public:
+
+
+	UFUNCTION(BlueprintCallable, Category = "Aimo|Function")
+		/** * 判断是否进入触控区域 */
+		virtual void BindTouchDelegate();
 
 	UFUNCTION(BlueprintCallable, Category = "Aimo|Function")
 		/** * 接收触发位置和索引 */

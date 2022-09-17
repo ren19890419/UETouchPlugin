@@ -11,17 +11,29 @@
 void UTouchWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	GetWorld()->GetTimerManager().SetTimer(BindTouchTimerHandle, this, &UTouchWidget::BindTouchDelegate, 2.0f, true);
+	BindTouchDelegate();
+}
+
+void UTouchWidget::BindTouchDelegate()
+{
 	if (GetOwningPlayer())
 	{
-		UTouchComponent* TouchComponent =  Cast<UTouchComponent>(GetOwningPlayer()->GetComponentByClass(UTouchComponent::StaticClass()));
-		if (TouchComponent)
+		UActorComponent* ActorComponent = GetOwningPlayer()->GetComponentByClass(UTouchComponent::StaticClass());
+		if (ActorComponent)
 		{
-			TScriptDelegate<FWeakObjectPtr> OnSetDragPrt; //建立对接变量
-			OnSetDragPrt.BindUFunction(this, "TouchIndex"); //对接变量绑定函数
-			TouchComponent->OnPressedTouch.Add(OnSetDragPrt); //绑定对接变量
+			UTouchComponent* TouchComponent = Cast<UTouchComponent>(ActorComponent);
+			if (TouchComponent)
+			{
+				TScriptDelegate<FWeakObjectPtr> OnSetDragPrt; //建立对接变量
+				OnSetDragPrt.BindUFunction(this, "TouchIndex"); //对接变量绑定函数
+				TouchComponent->OnPressedTouch.Add(OnSetDragPrt); //绑定对接变量
+				GetWorld()->GetTimerManager().ClearTimer(BindTouchTimerHandle);
+			}
 		}
 	}
 }
+
 
 void UTouchWidget::TouchIndex(FVector Moved, uint8 FingerIndex)
 {
@@ -162,3 +174,5 @@ bool UTouchWidget::IsTouchLocation(FVector Moved)
 	return Moved.X >= LocalWidgetLocation.X && Moved.X <= LocalWidgetLocation.X + SizeLocation.X  \
 		&& Moved.Y >= LocalWidgetLocation.Y && Moved.Y <= LocalWidgetLocation.Y + SizeLocation.Y; 
 }
+
+

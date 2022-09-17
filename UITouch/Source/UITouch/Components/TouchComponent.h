@@ -10,7 +10,7 @@
 #include "TouchComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable)
+UCLASS(config = Game, Blueprintable, ClassGroup=(Custom), BlueprintType,  meta=(DisplayName = "TouchComponent", BlueprintSpawnableComponent))
 class UITOUCH_API UTouchComponent : public UActorComponent
 {
 	GENERATED_BODY()

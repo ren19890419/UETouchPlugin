@@ -2,25 +2,28 @@
 
 
 #include "TouchPlayerController.h"
-#include "Kismet/KismetSystemLibrary.h" 
 
 
-
+ATouchPlayerController::ATouchPlayerController()
+{
+	//TouchComponent = CreateEditorOnlyDefaultSubobject<UTouchComponent>(TEXT("TouchComponent"));
+	
+}
 
 void ATouchPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	if (IsLocalController())
 	{
+		TouchComponent = NewObject<UTouchComponent>(this);
 		if (InputComponent == nullptr)
-	{
+		{
 			InputComponent = NewObject<UInputComponent>(this);
 		}
 		SetupPlayerInputComponent(InputComponent);
 	}
-	TouchComponent = CreateEditorOnlyDefaultSubobject<UTouchComponent>(TEXT("TouchComponent"));
 }
-
+	
 
 void ATouchPlayerController::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
@@ -35,16 +38,26 @@ void ATouchPlayerController::SetupPlayerInputComponent(class UInputComponent* Pl
 
 void ATouchPlayerController::TouchPressed(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	UKismetSystemLibrary::PrintString(this, "1", true, false, FColor::Blue, 2);
+	if (TouchComponent)
+	{
+		TouchComponent->Touch(Location, FingerIndex);
+	}
 }
 
 void ATouchPlayerController::TouchReleased(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	UKismetSystemLibrary::PrintString(this, "2", true, false, FColor::Blue, 2);
+	if (TouchComponent)
+	{
+		TouchComponent->Touch(Location, FingerIndex);
+	}
 }
 
 void ATouchPlayerController::TouchMove(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	UKismetSystemLibrary::PrintString(this, "3", true, false, FColor::Blue, 2);
+	if (TouchComponent)
+	{
+		Location.Z = 2;
+		TouchComponent->Touch(Location, FingerIndex);
+	}
 }
 
